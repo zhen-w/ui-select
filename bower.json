@@ -1,11 +1,11 @@
 {
-  "name": "ui-select",
+  "name": "z-ui-select",
   "version": "0.12.0",
-  "homepage": "https://github.com/angular-ui/ui-select",
+  "homepage": "https://github.com/zhen-w/ui-select",
   "authors": [
-    "AngularUI"
+    "AngularUI", "Zhen Wang"
   ],
-  "description": "AngularJS ui-select",
+  "description": "Bug fixed version based on AngularJS ui-select",
   "main": ["dist/select.js", "dist/select.css"],
   "license": "MIT",
   "ignore": [

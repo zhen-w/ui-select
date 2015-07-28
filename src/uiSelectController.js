@@ -447,6 +447,8 @@ uis.controller('uiSelectCtrl',
               }
               if (newItem) ctrl.select(newItem, true);
             });
+            e.preventDefault();
+            e.stopPropagation();
           }
         }
       }
