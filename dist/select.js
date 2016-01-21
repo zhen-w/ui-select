@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.12.1 - 2015-07-28T03:50:59.076Z
+ * Version: 0.12.1 - 2016-01-21T08:00:25.918Z
  * License: MIT
  */
 
@@ -704,7 +704,7 @@ uis.controller('uiSelectCtrl',
       _ensureHighlightVisible();
     }
 
-    if (key === KEY.ENTER || key === KEY.ESC ||  key === KEY.COMMA || key === KEY.TAB) {
+    if (key === KEY.ENTER || key === KEY.ESC || key === KEY.TAB || key === KEY.COMMA) {
       e.preventDefault();
       e.stopPropagation();
     }

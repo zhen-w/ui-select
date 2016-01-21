@@ -404,6 +404,13 @@ uis.controller('uiSelectCtrl',
           ctrl.activate(false, true); //In case its the search input in 'multiple' mode
         }
         break;
+      case KEY.COMMA:
+        if(ctrl.open && (ctrl.tagging.isActivated || ctrl.activeIndex >= 0)){
+          ctrl.select(ctrl.items[ctrl.activeIndex]); // Make sure at least one dropdown item is highlighted before adding if not in tagging mode
+        } else {
+          ctrl.activate(false, true); //In case its the search input in 'multiple' mode
+        }
+        break;
       case KEY.ESC:
         ctrl.close();
         break;
@@ -459,7 +466,7 @@ uis.controller('uiSelectCtrl',
       _ensureHighlightVisible();
     }
 
-    if (key === KEY.ENTER || key === KEY.ESC) {
+    if (key === KEY.ENTER || key === KEY.ESC || key === KEY.TAB || key === KEY.COMMA) {
       e.preventDefault();
       e.stopPropagation();
     }
