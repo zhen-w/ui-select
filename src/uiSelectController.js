@@ -310,7 +310,8 @@ uis.controller('uiSelectCtrl',
   ctrl.close = function(skipFocusser) {
     if (!ctrl.open) return;
     if (ctrl.ngModel && ctrl.ngModel.$setTouched) ctrl.ngModel.$setTouched();
-    _resetSearchInput();
+    if(!ctrl.tagOnBlur)
+       _resetSearchInput();
     ctrl.open = false;
 
     $scope.$broadcast('uis:close', skipFocusser);
@@ -488,6 +489,20 @@ uis.controller('uiSelectCtrl',
         e.preventDefault();
         e.stopPropagation();
       }
+    }
+  });
+
+    //Allow tagging on blur
+  ctrl.searchInput.on('blur', function() {
+    if ((ctrl.items.length > 0 || ctrl.tagging.isActivated) && ctrl.tagOnBlur) {
+      $timeout(function() {
+        ctrl.searchInput.triggerHandler('tagged');
+        var newItem = ctrl.search;
+        if ( ctrl.tagging.fct ) {
+          newItem = ctrl.tagging.fct( newItem );
+        }
+        if (newItem) ctrl.select(newItem, true);
+      });
     }
   });
 

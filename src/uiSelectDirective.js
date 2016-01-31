@@ -114,6 +114,18 @@ uis.directive('uiSelect',
           }
         });
 
+         //check if tag-on-blur is enabled
+        attrs.$observe('tagOnBlur', function() {
+          if(attrs.tagOnBlur !== undefined && attrs.tagOnBlur === 'true')
+          {
+              $select.tagOnBlur = true;
+          }
+          else
+          {
+              $select.tagOnBlur = false;            
+          }
+        });
+
         //Automatically gets focus when loaded
         if (angular.isDefined(attrs.autofocus)){
           $timeout(function(){
@@ -147,9 +159,6 @@ uis.directive('uiSelect',
             //Will lose focus only with certain targets
             var focusableControls = ['input','button','textarea'];
             var targetScope = angular.element(e.target).scope(); //To check if target is other ui-select
-            if(angular.isUndefined($select.items) || $select.items.length === 0){
-              $select.select($select.items[$select.activeIndex]);
-            }
             var skipFocusser = targetScope && targetScope.$select && targetScope.$select !== $select; //To check if target is other ui-select
             if (!skipFocusser) skipFocusser =  ~focusableControls.indexOf(e.target.tagName.toLowerCase()); //Check if target is input, button or textarea
             $select.close(skipFocusser);

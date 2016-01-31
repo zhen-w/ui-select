@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.12.13 - 2016-01-31T08:10:23.988Z
+ * Version: 0.12.14 - 2016-01-31T08:39:24.979Z
  * License: MIT
  */
 
@@ -548,7 +548,8 @@ uis.controller('uiSelectCtrl',
   ctrl.close = function(skipFocusser) {
     if (!ctrl.open) return;
     if (ctrl.ngModel && ctrl.ngModel.$setTouched) ctrl.ngModel.$setTouched();
-    _resetSearchInput();
+    if(!ctrl.tagOnBlur)
+       _resetSearchInput();
     ctrl.open = false;
 
     $scope.$broadcast('uis:close', skipFocusser);
@@ -729,6 +730,20 @@ uis.controller('uiSelectCtrl',
     }
   });
 
+    //Allow tagging on blur
+  ctrl.searchInput.on('blur', function() {
+    if ((ctrl.items.length > 0 || ctrl.tagging.isActivated) && ctrl.tagOnBlur) {
+      $timeout(function() {
+        ctrl.searchInput.triggerHandler('tagged');
+        var newItem = ctrl.search;
+        if ( ctrl.tagging.fct ) {
+          newItem = ctrl.tagging.fct( newItem );
+        }
+        if (newItem) ctrl.select(newItem, true);
+      });
+    }
+  });
+
   ctrl.searchInput.on('tagged', function() {
     $timeout(function() {
       _resetSearchInput();
@@ -883,6 +898,18 @@ uis.directive('uiSelect',
           }
         });
 
+         //check if tag-on-blur is enabled
+        attrs.$observe('tagOnBlur', function() {
+          if(attrs.tagOnBlur !== undefined && attrs.tagOnBlur === 'true')
+          {
+              $select.tagOnBlur = true;
+          }
+          else
+          {
+              $select.tagOnBlur = false;            
+          }
+        });
+
         //Automatically gets focus when loaded
         if (angular.isDefined(attrs.autofocus)){
           $timeout(function(){
@@ -916,9 +943,6 @@ uis.directive('uiSelect',
             //Will lose focus only with certain targets
             var focusableControls = ['input','button','textarea'];
             var targetScope = angular.element(e.target).scope(); //To check if target is other ui-select
-            if(angular.isUndefined($select.items) || $select.items.length === 0){
-              $select.select($select.items[$select.activeIndex]);
-            }
             var skipFocusser = targetScope && targetScope.$select && targetScope.$select !== $select; //To check if target is other ui-select
             if (!skipFocusser) skipFocusser =  ~focusableControls.indexOf(e.target.tagName.toLowerCase()); //Check if target is input, button or textarea
             $select.close(skipFocusser);
