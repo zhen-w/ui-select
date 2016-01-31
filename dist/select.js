@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.12.1 - 2016-01-21T08:00:25.918Z
+ * Version: 0.12.12 - 2016-01-31T06:28:19.271Z
  * License: MIT
  */
 
@@ -916,6 +916,9 @@ uis.directive('uiSelect',
             //Will lose focus only with certain targets
             var focusableControls = ['input','button','textarea'];
             var targetScope = angular.element(e.target).scope(); //To check if target is other ui-select
+            if(scope.taggingLabel === false){
+              $select.select($select.items[$select.activeIndex]);
+            }
             var skipFocusser = targetScope && targetScope.$select && targetScope.$select !== $select; //To check if target is other ui-select
             if (!skipFocusser) skipFocusser =  ~focusableControls.indexOf(e.target.tagName.toLowerCase()); //Check if target is input, button or textarea
             $select.close(skipFocusser);
