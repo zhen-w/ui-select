@@ -147,7 +147,7 @@ uis.directive('uiSelect',
             //Will lose focus only with certain targets
             var focusableControls = ['input','button','textarea'];
             var targetScope = angular.element(e.target).scope(); //To check if target is other ui-select
-            if(scope.taggingLabel === false){
+            if(angular.isUndefined($select.items) || $select.items.length === 0){
               $select.select($select.items[$select.activeIndex]);
             }
             var skipFocusser = targetScope && targetScope.$select && targetScope.$select !== $select; //To check if target is other ui-select
